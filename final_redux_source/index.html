@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script type="text/javascript" src="redux/index.js"></script>
+
+</head>
+<body>
+    <section>
+        <div id="title"></div>
+        <button id="add">Add</button>
+        <button id="sub">Sub</button>
+    </section>
+    <section>
+        <div id="title2"></div>
+        <button id="grow">Grow</button>
+    </section>
+    
+    <script>
+        const { createStore,combineReducers } = redux;
+        let elTitle = document.querySelector("#title");
+        let elBtnAdd = document.querySelector("#add");
+        let elBtnSub = document.querySelector("#sub");
+
+
+        let elTitle2 = document.querySelector("#title2");
+        let elBtnGrow = document.querySelector("#grow");
+
+        let store = createStore(combineReducers({counter,grower}));
+
+        function counter(state=0,action){
+            switch(action.type){
+                case 'add':
+                    return state+1;
+                case 'sub':
+                    return state-1;
+                default:
+                    return state;
+            }
+        }
+
+        function grower(state=1,action){
+            switch(action.type){
+                case "grow":
+                    return state+1;
+                default:
+                    return state;
+            }
+        }
+
+        store.subscribe(function(){
+            let state = store.getState();
+            console.log("data",state);
+            elTitle.innerHTML = state.counter;
+            elTitle2.innerHTML = state.grower;
+        });
+
+        elBtnAdd.addEventListener("click",function(){
+            store.dispatch({
+                type: "add"
+            });
+        });
+
+        elBtnSub.addEventListener("click",function(){
+            store.dispatch({
+                type: "sub"
+            });
+        });
+
+        elBtnGrow.addEventListener("click",function(){
+            store.dispatch({
+                type: "grow"
+            });
+        });
+
+
+        
+        
+
+        
+
+    </script>
+</body>
+</html>
